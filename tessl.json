@@ -1,0 +1,23 @@
+{
+  "name": "project",
+  "dependencies": {
+    "tessl/pypi-temporalio": {
+      "version": "1.17.0"
+    },
+    "anthropics/skills": {
+      "version": "b0cbd3df1533b396d281a6886d5132f623393a9c",
+      "source": "https://github.com/anthropics/skills",
+      "include": {
+        "skills": [
+          "frontend-design"
+        ]
+      }
+    },
+    "pantheon-ai/software-design-principles": {
+      "version": "0.1.4"
+    },
+    "pantheon-ai/test-driven-development": {
+      "version": "0.2.4"
+    }
+  }
+}

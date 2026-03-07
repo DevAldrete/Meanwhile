@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "temporal-python-testing": {
+      "source": "wshobson/agents",
+      "sourceType": "github",
+      "computedHash": "749b486daa5a8c68d33dff3e3fbc523cec2728db729bdd9366f2c8bcabc8f992"
+    }
+  }
+}
