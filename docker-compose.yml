@@ -1,0 +1,28 @@
+services:
+  # The Database (PostgreSQL)
+  db:
+    image: postgres:17-alpine
+    container_name: meanwhile-db
+    environment:
+      POSTGRES_USER: meanwhile_user
+      POSTGRES_PASSWORD: meanwhile_pass
+      POSTGRES_DB: meanwhile_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U meanwhile_user -d meanwhile_pass"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - meanwhile-net
+    restart: unless-stopped
+
+networks:
+  meanwhile-net:
+    driver: bridge
+
+volumes:
+  pgdata:

@@ -18,6 +18,9 @@
     },
     "pantheon-ai/test-driven-development": {
       "version": "0.2.4"
+    },
+    "tessl/pypi-fastapi": {
+      "version": "0.116.0"
     }
   }
 }

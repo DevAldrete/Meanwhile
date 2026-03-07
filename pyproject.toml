@@ -11,7 +11,22 @@ dependencies = [
     "uvicorn>=0.41.0",
 ]
 
+[project.scripts]
+meanwhile-api = "main:main"
+meanwhile-worker = "main:worker_main"
+
 [dependency-groups]
 dev = [
     "pytest>=9.0.2",
+    "pytest-asyncio>=1.2.0",
+    "pytest-cov>=7.0.0",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+markers = [
+    "integration: tests that use a Temporal server",
+    "replay: determinism replay tests",
 ]
