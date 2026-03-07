@@ -16,3 +16,6 @@ wheels/
 
 # AI
 CLAUDE.md
+
+# Environment variables
+.env

@@ -2,10 +2,10 @@ import asyncio
 
 import uvicorn
 
-from src.api import create_app
-from src.config import get_settings
-from src.temporal import connect_temporal
-from src.worker import create_worker
+from meanwhile.api import create_app
+from meanwhile.config import get_settings
+from meanwhile.temporal import connect_temporal
+from meanwhile.worker import create_worker
 
 
 def main() -> None:

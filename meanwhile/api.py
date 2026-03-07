@@ -25,7 +25,10 @@ def create_app(
     @asynccontextmanager
     async def lifespan(app_instance: FastAPI):
         if app_instance.state.temporal_client is None:
-            app_instance.state.temporal_client = await connect_temporal(app_settings)
+            try:
+                app_instance.state.temporal_client = await connect_temporal(app_settings)
+            except Exception:
+                app_instance.state.temporal_client = None
         yield
 
     app = FastAPI(

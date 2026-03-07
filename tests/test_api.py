@@ -1,3 +1,5 @@
+from unittest.mock import AsyncMock, patch
+
 from fastapi.testclient import TestClient
 
 from meanwhile.api import create_app
@@ -26,6 +28,17 @@ def test_health_endpoint_returns_ok() -> None:
 
     assert response.status_code == 200
     assert response.json() == {"status": "ok"}
+
+
+def test_health_returns_503_when_temporal_unavailable() -> None:
+    app = create_app(settings=AppSettings(), temporal_client=None)
+
+    with patch("meanwhile.api.connect_temporal", new_callable=AsyncMock) as mock_connect:
+        mock_connect.side_effect = Exception("Temporal unavailable")
+        with TestClient(app) as client:
+            response = client.get("/api/health")
+
+    assert response.status_code == 503
 
 
 def test_chat_endpoint_returns_temporal_result() -> None:

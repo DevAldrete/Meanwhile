@@ -56,3 +56,16 @@ Meanwhile leverages Temporal's open-source, MIT-licensed engine to handle the he
 ### Cloud Provider
 
 - **Railway**: Cloud deployment platform
+
+## Development
+
+The backend is the Python package `meanwhile`. The package lives in the `meanwhile/` directory at project root. Imports use `meanwhile.*` (e.g. `from meanwhile.api import create_app`).
+
+**From project root:**
+
+- Install and run the API: `uv sync` then `uv run meanwhile-api`
+- Run the worker: `uv run meanwhile-worker`
+- Run tests: `uv run pytest tests/ -v`
+- Verify imports: `uv run python -c "from meanwhile.api import create_app; print('ok')"`
+- Run database migrations: `uv run alembic upgrade head` (see `docs/database.md` for schema and downgrade).
+- Config and env vars (Temporal, DB, etc.) are documented in `docs/config.md`. Use the same env (or `.env`) for the API and worker.
