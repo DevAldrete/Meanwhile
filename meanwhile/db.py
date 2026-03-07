@@ -1,5 +1,6 @@
 """SQLAlchemy async engine, session factory, and declarative base for Meanwhile."""
 
+import json
 from collections.abc import AsyncGenerator
 from datetime import datetime, timezone
 from uuid import uuid4
@@ -119,3 +120,21 @@ class ExecutionLog(Base):
     workflow_run: Mapped["WorkflowRun"] = relationship("WorkflowRun", back_populates="execution_logs")
 
     __table_args__ = (Index("ix_execution_logs_workflow_run_id", "workflow_run_id"),)
+
+
+async def append_execution_log(
+    session: AsyncSession,
+    workflow_run_id: int,
+    node_id: str,
+    step_type: str,
+    payload: dict,
+) -> None:
+    """Append one row to execution_logs. Used by activities (e.g. run AI node)."""
+    row = ExecutionLog(
+        workflow_run_id=workflow_run_id,
+        node_id=node_id,
+        step_type=step_type,
+        payload_json=json.dumps(payload),
+    )
+    session.add(row)
+    await session.flush()

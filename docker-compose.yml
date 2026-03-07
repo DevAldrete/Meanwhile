@@ -12,10 +12,56 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U meanwhile_user -d meanwhile_pass"]
+      test: ["CMD-SHELL", "pg_isready -U meanwhile_user -d meanwhile_db"]
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - meanwhile-net
+    restart: unless-stopped
+
+  # Meanwhile API (same image as worker, different command)
+  api:
+    build: .
+    image: meanwhile-backend
+    container_name: meanwhile-api
+    command: ["uv", "run", "meanwhile-api"]
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://meanwhile_user:meanwhile_pass@db:5432/meanwhile_db
+      TEMPORAL_TARGET: ${TEMPORAL_TARGET:-host.docker.internal:7233}
+      TEMPORAL_NAMESPACE: ${TEMPORAL_NAMESPACE:-default}
+      TEMPORAL_TASK_QUEUE: ${TEMPORAL_TASK_QUEUE:-chatbot-task-queue}
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8000/api/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - meanwhile-net
+    restart: unless-stopped
+
+  # Meanwhile worker (same image as api, different command)
+  worker:
+    build: .
+    image: meanwhile-backend
+    container_name: meanwhile-worker
+    command: ["uv", "run", "meanwhile-worker"]
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://meanwhile_user:meanwhile_pass@db:5432/meanwhile_db
+      TEMPORAL_TARGET: ${TEMPORAL_TARGET:-host.docker.internal:7233}
+      TEMPORAL_NAMESPACE: ${TEMPORAL_NAMESPACE:-default}
+      TEMPORAL_TASK_QUEUE: ${TEMPORAL_TASK_QUEUE:-chatbot-task-queue}
     networks:
       - meanwhile-net
     restart: unless-stopped

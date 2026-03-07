@@ -69,3 +69,11 @@ The backend is the Python package `meanwhile`. The package lives in the `meanwhi
 - Verify imports: `uv run python -c "from meanwhile.api import create_app; print('ok')"`
 - Run database migrations: `uv run alembic upgrade head` (see `docs/database.md` for schema and downgrade).
 - Config and env vars (Temporal, DB, etc.) are documented in `docs/config.md`. Use the same env (or `.env`) for the API and worker.
+
+### Docker
+
+You can run the full backend stack (PostgreSQL, API, worker) with Docker Compose. Temporal is not in Compose; run it on the host (e.g. `temporal server start-dev`) and set `TEMPORAL_TARGET=host.docker.internal:7233` in `.env`.
+
+- **Run the stack:** `docker compose up --build` (see `docs/docker.md`).
+- **Required env:** Use `.env` (see `.env.example`); `docs/docker.md` lists variables and how to run migrations when using Docker.
+- **Frontend:** The `web/` app is not part of this Compose for MVP; run it from the host if needed.

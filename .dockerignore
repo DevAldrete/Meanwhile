@@ -1,0 +1,41 @@
+# Virtual env and local Python
+.venv
+__pycache__
+*.py[cod]
+*.pyo
+.Python
+*.so
+
+# Git and IDE
+.git
+.gitignore
+.cursor
+.vscode
+*.swp
+*.swo
+
+# Tests (not needed in runtime image)
+tests
+.pytest_cache
+.coverage
+htmlcov
+
+# Frontend (out of scope for this image)
+web
+
+# Docs and specs (not needed in image)
+docs
+specs
+*.md
+!README.md
+
+# Env and secrets (must be provided at runtime)
+.env
+.env.*
+!.env.example
+
+# Build and tooling (pyproject.toml and uv.lock are needed for Docker build)
+.uv
+ruff.toml
+alembic.ini
+alembic
