@@ -5,10 +5,14 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "fastapi>=0.135.1",
-    "pydantic-ai>=0.7.2",
-    "temporalio>=1.23.0",
-    "uvicorn>=0.41.0",
+  "alembic>=1.18.4",
+  "asyncpg>=0.31.0",
+  "fastapi>=0.135.1",
+  "pydantic-ai>=0.7.2",
+  "slowapi>=0.1.9",
+  "sqlalchemy>=2.0.48",
+  "temporalio>=1.23.0",
+  "uvicorn>=0.41.0",
 ]
 
 [project.scripts]
@@ -16,17 +20,13 @@ meanwhile-api = "main:main"
 meanwhile-worker = "main:worker_main"
 
 [dependency-groups]
-dev = [
-    "pytest>=9.0.2",
-    "pytest-asyncio>=1.2.0",
-    "pytest-cov>=7.0.0",
-]
+dev = ["pytest>=9.0.2", "pytest-asyncio>=1.2.0", "pytest-cov>=7.0.0"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 testpaths = ["tests"]
 python_files = ["test_*.py"]
 markers = [
-    "integration: tests that use a Temporal server",
-    "replay: determinism replay tests",
+  "integration: tests that use a Temporal server",
+  "replay: determinism replay tests",
 ]
