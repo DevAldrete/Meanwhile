@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { Maximize, Minus, Plus } from "lucide-react";
 
 import {
@@ -58,7 +57,7 @@ export function ZoomSlider({
           min={minZoom}
           max={maxZoom}
           step={0.01}
-          onValueChange={(values) => zoomTo(values[0])}
+          onValueChange={(values: number[]) => zoomTo(values[0])}
         />
         <Button
           variant="ghost"
